@@ -809,7 +809,15 @@ public final class MapboxMap {
     moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     setMinZoomPreference(minZoom);
     setMaxZoomPreference(maxZoom);
-    setStyle(new Style.Builder().fromUri(definition.getStyleURL()), callback);
+    String styleUrl = definition.getStyleURL().trim();
+    Style.Builder style;
+    if (styleUrl.startsWith("{")) {
+      style = new Style.Builder().fromJson(styleUrl);
+    } else {
+      style = new Style.Builder().fromUri(styleUrl);
+    }
+
+    setStyle(style, callback);
   }
 
   //
